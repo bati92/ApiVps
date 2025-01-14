@@ -40,28 +40,37 @@
                                 <a href="#App" class="has-arrow"><i class="fa fa-th-large"></i><span>الخدمات</span></a>
                                     <ul>
 
-                                    <li><a href="#">قسم  التطبيقات</a>
+                                    <li><a href="#">قسم خدمات السرفر</a>
                                     <ul>
-                                      <li><a href="/app-section">الأقسام</a></li>
-                                      <li><a href="/app">التطبيقات</a></li>
-                                      <li><a href="/app-order">طلبات التطبيقات</a></li>
+                                      <li><a href="/service-category">الأقسام</a></li>
+                                      <li><a href="/service">الخدمات</a></li>
+                                      <li><a href="service-order">طلبات الخدمات</a></li>
 
                                      </ul>
                                     </li>
+                                    <li><a href="#">قسم  التطبيقات</a>
+                                      <ul>
+                                        <li><a href="/oyun-section/2/type">التطبيقات</a></li>
+                                      
+                                        <li><a href="/oyun-order/2">طلبات التطبيقات</a></li>
+
+                                       </ul>
+                                    </li>
                                     <li><a href="#">قسم الألعاب</a>
                                      <ul>
-                                      <li><a href="/game-section">الأقسام</a></li>
-                                      <li><a href="/game">الألعاب</a></li>
-                                      <li><a href="/game-order">طلبات الألعاب</a></li>
+                                      <li><a href="/oyun-section/1/type">الالعاب</a></li>
+                                      <li><a href="/oyun-order/1">طلبات الألعاب</a></li>
 
                                      </ul>
                                     </li>
                                  
                                     <li><a href="#"> قسم البيانات والاتصالات</a>
                                        <ul>
-                                        <li><a href="/data-communication-section"> الاقسام</a> </li>
-                                        <li><a href="/data-communication">الشركات</a></li>
-                                        <li><a href="/data-communication-order">الطلبات </a></li>
+                                        <li><a href="/oyun-section/3/type"> فاتورة</a> </li>
+                                       
+                                        <li><a href="/oyun-order/3">طلبات الفاتورة </a></li>
+                                        <li><a href="/kontor-section/"> الرصيد (الكونتور)</a> </li>
+                                        <li><a href="/kontor-order/">  طلبات شحن الرصيد</a> </li>
                                       </ul>
                                     </li>
                                     <li><a href="/ebank-section">قسم البنوك الرقمية</a>
@@ -104,23 +113,24 @@
                                 <a href="#Dashboard" class="has-arrow"><i class="fa icon-users"></i><span>العملاء</span></a>
                                 <ul>
                                     <li><a href="/users/agents"> العملاء</a></li>
-                                    <li><a href="/users/transactions/{{auth()->user()->id}}"> عمليات تعبئة الرصيد</a></li>
+                                  
                                     @if(auth()->user()->role==1)
                                     <li><a href="/vip/">عمولات العملاء</a></li>
                                     @endif
                                 </ul>
                             </li>
-                            @if(auth()->user()->role==1)
-                              <li >
-                                <a href="#Dashboard" class="has-arrow"><i class="fa fa-money"></i><span>اضافة الرصيد</span></a>
+                            <li >
+                                <a href="#Dashboard" class="has-arrow"><i class="fa fa-money"></i><span> عمليات تعبئة الرصيد</span></a>
                                 <ul>
-                              
-
-                                        <li><a href="/transfer-money-firm">شركات الشحن</a></li>
-                                        <li><a href="/transfer-money-firm-order">طلبات الشحن </a></li>
-
+                                        <li><a href="/transfer-money-firm">شركات شحن الرصيد</a></li>
+                                        <li><a href="/transfer-money-firm-order">طلبات شحن الرصيد </a></li>
+                                        <li><a href="/users/transactions/all/done/{{auth()->user()->id}}">   عمليات تعبئة الرصيد المكتملة</a></li>
+                                    <li><a href="/users/transactions/all/debts/{{auth()->user()->id}}">   عمليات  تعبئة الرصيد (الديون المستحقة لي )</a></li>
+                                    <li><a href="/users/transactions/all/mydebts/{{auth()->user()->id}}">   عمليات  تعبئة الرصيد ( الديون المستحقة علي)</a></li>
                                 </ul>
                             </li>
+                            @if(auth()->user()->role==1)
+ 
   <li>
                                 <a href="/program" class=""><i class="fa fa-user"></i><span>الوكلاء</span></a>
                             </li>
@@ -142,16 +152,7 @@
                 </div>
 
                 <div class="tab-pane" id="setting">
-                    <h6>Choose Skin</h6>
-                    <ul class="choose-skin list-unstyled">
-                        <li data-theme="purple"><div class="purple"></div></li>
-                        <li data-theme="blue"><div class="blue"></div></li>
-                        <li data-theme="cyan" class="active"><div class="cyan"></div></li>
-                        <li data-theme="green"><div class="green"></div></li>
-                        <li data-theme="orange"><div class="orange"></div></li>
-                        <li data-theme="blush"><div class="blush"></div></li>
-                        <li data-theme="red"><div class="red"></div></li>
-                    </ul>
+                 
 
                     <ul class="list-unstyled font_setting mt-3">
                         <li>
@@ -204,34 +205,9 @@
                         </li>
                     </ul>
 
-                    <hr>
-                    <h6>General Settings</h6>
-                    <ul class="setting-list list-unstyled">
-                        <li>
-                            <label class="fancy-checkbox">
-                                <input type="checkbox" name="checkbox" checked>
-                                <span>Allowed Notifications</span>
-                            </label>
-                        </li>
-                        <li>
-                            <label class="fancy-checkbox">
-                                <input type="checkbox" name="checkbox">
-                                <span>Offline</span>
-                            </label>
-                        </li>
-                        <li>
-                            <label class="fancy-checkbox">
-                                <input type="checkbox" name="checkbox">
-                                <span>Location Permission</span>
-                            </label>
-                        </li>
-                    </ul>
+                
 
-                    <a href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                document.getElementById('logout-form').submit();"  class="btn btn-block btn-primary"><i class="icon-power"></i>تسجيل الخروج
-                            </a>
-                    <a href="/profile" class="btn btn-block btn-secondary">View portfolio</a>
+            
                 </div>
 
 

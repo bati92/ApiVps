@@ -11,7 +11,16 @@ use App\Http\Controllers\SettingController;
 
 use App\Http\Controllers\ServiceCategoryController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ServiceOrderController;
 
+use App\Http\Controllers\TweetcellSectionController;
+use App\Http\Controllers\TweetcellController;
+use App\Http\Controllers\TweetcellOrderController;
+use App\Http\Controllers\TweetcellKontorSectionController;
+use App\Http\Controllers\TweetcellKontorController;
+use App\Http\Controllers\TweetcellKontorOrderController;
+
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\CardOrderController;
 
@@ -70,6 +79,11 @@ Route::middleware([LoadSettings::class])->group(function () {
 Route::group(['middleware'=> 'auth'], function(){
 
  
+    Route::get('/move-game-section/{id}', [GameSectionController::class, 'moveGameSectionToAppSection']);
+  
+    Route::get('/move-app-to-game-section/{id}', [AppSectionContoller::class, 'moveAppSectionToGameSection']);
+    Route::get('/move-app-to-data-section/{id}', [AppSectionContoller::class, 'moveAppSectionToDataSection']);
+    Route::get('/move-game-to-data-section/{id}', [GameSectionController::class, 'moveGameSectionToDataSection']);
 
     Route::get('/admin/unread-notifications', [NotificationController::class, 'getUnreadNotifications'])->name('unread.notifications');
     Route::get('/dashboard', [AllServicesTotalController::class, 'index']);
@@ -84,9 +98,14 @@ Route::group(['middleware'=> 'auth'], function(){
     
     Route::get('users/agents', [UserController::class, 'getAgents']);
     
-    Route::get('users/transactions/{id}', [UserController::class, 'getUserTransactions']);
+    Route::get('users/transactions/{id}', [TransactionController::class, 'getUserTransactions']);
     
-    Route::get('users/transactions/done/{id}', [UserController::class, 'setPaymentDone']);
+    Route::get('users/transactions/all/done/{id}', [TransactionController::class, 'getUserTransactionsDone']);
+    
+    Route::get('users/transactions/all/debts/{id}', [TransactionController::class, 'getUserTransactionsDebts']);
+    Route::get('users/transactions/all/mydebts/{id}', [TransactionController::class, 'getUserTransactionsMyDebts']);
+    
+    Route::get('users/transactions/done/{id}', [TransactionController::class, 'setPaymentDone']);
     Route::get('/profile', function () {  return view('backend.users.profile');});
  
     Route::resource('setting', SettingController::class);
@@ -95,11 +114,19 @@ Route::group(['middleware'=> 'auth'], function(){
     
     Route::post('/service-category/{id}/status',[ ServiceCategoryController::class,'changeStatus']);
     
-    Route::get('/service-category/{id}/category',[ ServiceController::class,'showServices']);
+    Route::get('/service/{id}/category',[ ServiceController::class,'showServices']);
 
     Route::resource('service', ServiceController::class);
     
-    Route::post('/service/{id}/status',[ ServiceController::class,'changeStatus']);
+
+       Route::resource('service-order',ServiceOrderController::class);
+       Route::post('/service/{id}/status',[ ServiceController::class,'changeStatus']);
+       
+    Route::get('service-order/reject/{id}',[ ServiceOrderController::class,'reject']);
+    Route::get('service-order/accept/{id}',[ ServiceOrderController::class,'accept']);
+
+
+
     Route::resource('myapp', AppController::class);
     Route::resource('app-section', AppSectionContoller::class);
     Route::resource('app-order', AppOrderController::class);
@@ -146,15 +173,27 @@ Route::group(['middleware'=> 'auth'], function(){
     Route::get('ecard-order/reject/{id}',[ EcardOrderController::class,'reject']);
     Route::get('ecard-order/accept/{id}',[ EcardOrderController::class,'accept']);
 
-    Route::resource('game' , GameController::class);
-    Route::resource('game-section' , GameSectionController::class);
-    Route::get('/game/{id}/category',[ GameController::class,'showGames']);
-    Route::resource('game-order' , GameOrderController::class);
-    Route::post('/game-section/{id}/status',[ GameSectionController::class,'changeStatus']);
-    Route::post('/game/{id}/status',[ GameController::class,'changeStatus']);
+    Route::resource('oyun' , TweetcellController::class);
+    Route::resource('oyun-section' , TweetcellSectionController::class);
+    Route::get('oyun-section/{id}/type' , [ TweetcellSectionController::class,'getType']);
+    Route::get('/oyun/{id}/category',[ TweetcellController::class,'showGames']);
+    Route::get('oyun-order/{type}' , [TweetcellOrderController::class, 'index']);
+    Route::post('/oyun-section/{id}/status',[ TweetcellSectionController::class,'changeStatus']);
+    Route::post('/oyun/{id}/status',[ TweetcellController::class,'changeStatus']);
 
-    Route::get('game-order/reject/{id}',[ GameOrderController::class,'reject']);
-    Route::get('game-order/accept/{id}',[ GameOrderController::class,'accept']);
+    Route::get('oyun-order/reject/{id}',[ TweetcellOrderController::class,'reject']);
+    Route::get('oyun-order/accept/{id}',[TweetcellOrderController::class,'accept']);
+
+    
+    Route::resource('kontor' , TweetcellKontorController::class);
+    Route::resource('kontor-section' , TweetcellKontorSectionController::class);
+    Route::get('/kontor/{id}/category',[ TweetcellKontorController::class,'showGames']);
+    Route::resource('kontor-order' ,TweetcellKontorOrderController::class);
+    Route::post('/kontor-section/{id}/status',[ TweetcellKontorSectionController::class,'changeStatus']);
+    Route::post('/kontor/{id}/status',[ TweetcellKontorController::class,'changeStatus']);
+
+    Route::get('kontor-order/reject/{id}',[ TweetcellKontorOrderController::class,'reject']);
+    Route::get('kontor-order/accept/{id}',[TweetcellKontorOrderController::class,'accept']);
 
     
     Route::resource('program' , ProgramController::class);
